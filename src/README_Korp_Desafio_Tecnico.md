@@ -36,8 +36,8 @@ Além disso, o desafio inclui **tratamento de falhas entre serviços**, **concor
 
 ## ⚙️ Tecnologias Utilizadas
 
-### 🧩 Backend (.NET 8)
-- **ASP.NET Core 8**
+### 🧩 Backend (.NET 9)
+- **ASP.NET Core 9**
 - **Entity Framework Core**
 - **Microsoft.EntityFrameworkCore.SqlServer**
 - **Microsoft.EntityFrameworkCore.Design**
@@ -170,27 +170,58 @@ Além disso, o desafio inclui **tratamento de falhas entre serviços**, **concor
 
 ```
 /src
- ├── EstoqueService/
- │    ├── Controllers/
- │    ├── Models/
- │    ├── Services/
- │    ├── Repositories/
- │    └── Program.cs
- │
- ├── FaturamentoService/
- │    ├── Controllers/
- │    ├── Models/
- │    ├── Services/
- │    ├── Repositories/
- │    └── Program.cs
+ ├── Backend/
+ │    ├── EstoqueService/
+ │    │    ├── Controllers/
+ │    │    │    └── ProdutosController.cs
+ │    │    ├── Models/
+ │    │    │    └── Produto.cs
+ │    │    ├── Services/
+ │    │    │    └── ProdutoService.cs
+ │    │    ├── Repositories/
+ │    │    │    └── ProdutoRepository.cs
+ │    │    ├── Data/
+ │    │    │    └── EstoqueDbContext.cs
+ │    │    ├── appsettings.json
+ │    │    ├── EstoqueService.csproj
+ │    │    └── Program.cs
+ │    │
+ │    ├── FaturamentoService/
+ │    │    ├── Controllers/
+ │    │    │    └── NotasFiscaisController.cs
+ │    │    ├── Models/
+ │    │    │    └── NotaFiscal.cs
+ │    │    ├── Services/
+ │    │    │    └── NotaFiscalService.cs
+ │    │    ├── Repositories/
+ │    │    │    └── NotaFiscalRepository.cs
+ │    │    ├── Data/
+ │    │    │    └── FaturamentoDbContext.cs
+ │    │    ├── appsettings.json
+ │    │    ├── FaturamentoService.csproj
+ │    │    └── Program.cs
  │
  ├── Frontend/
  │    ├── src/
+ │    │    ├── app/
+ │    │    │    ├── pages/
+ │    │    │    │    ├── produtos/
+ │    │    │    │    └── notas-fiscais/
+ │    │    │    ├── components/
+ │    │    │    │    └── shared/
+ │    │    │    ├── services/
+ │    │    │    │    ├── produto.service.ts
+ │    │    │    │    └── nota-fiscal.service.ts
+ │    │    │    └── app.module.ts
+ │    │    ├── assets/
+ │    │    └── environments/
+ │    │         ├── environment.ts
+ │    │         └── environment.prod.ts
  │    └── angular.json
  │
  ├── docker-compose.yml
- ├── README.md
- └── .gitignore
+ ├── .gitignore
+ └── README.md
 ```
 
 ---
@@ -211,7 +242,7 @@ docker-compose up --build
 
 ## 📚 Documentação e Boas Práticas
 
-- Código versionado com **GitFlow**.  
+- Código versionado.  
 - APIs documentadas via **Swagger/OpenAPI**.  
 - Logs estruturados e métricas básicas de performance.  
 - Testes unitários e cenários de falha simulados.  
@@ -239,5 +270,5 @@ Ao final do projeto, espera-se:
 ## 📄 Autor
 **Rafael Colares**  
 Desenvolvedor Full Stack • .NET • Angular • SQL Server  
-📧 [seuemail@exemplo.com]  
-🔗 [LinkedIn](https://www.linkedin.com/in/seu-perfil)
+📧 [rafaelcolares.dev@gmail.com]  
+🔗 [LinkedIn](https://www.linkedin.com/in/rafael-colares/)
