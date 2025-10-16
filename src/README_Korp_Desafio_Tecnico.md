@@ -234,8 +234,8 @@ docker-compose up --build
 ```
 
 ### 🌐 Acessar interfaces
-- **Swagger Estoque:** http://localhost:5001/swagger  
-- **Swagger Faturamento:** http://localhost:5002/swagger  
+- **Swagger Estoque:** http://localhost:5127/swagger/index.html  
+- **Swagger Faturamento:** http://localhost:5042/swagger/index.html  
 - **Frontend Angular:** http://localhost:4200  
 
 ---
