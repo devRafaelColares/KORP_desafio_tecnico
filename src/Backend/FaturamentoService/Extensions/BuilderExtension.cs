@@ -1,4 +1,6 @@
 using FaturamentoService.Configurations;
+using FaturamentoService.Core.Interfaces;
+using FaturamentoService.Infraestructure.Data.UnitOfWork;
 using FaturamentoService.Infraestructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
