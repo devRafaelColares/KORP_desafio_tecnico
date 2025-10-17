@@ -1,5 +1,5 @@
-using FaturamentoServiceService.Endpoints;
-using FaturamentoServiceService.Extensions;
+using FaturamentoService.Endpoints;
+using FaturamentoService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();
