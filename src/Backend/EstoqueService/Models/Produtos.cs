@@ -10,4 +10,7 @@ public class Produto
 
     // Navegação para histórico de movimentações
     public ICollection<MovimentacaoEstoque>? Movimentacoes { get; set; }
+
+    // Token de concorrência (optimistic concurrency)
+    public byte[]? RowVersion { get; set; }
 }
