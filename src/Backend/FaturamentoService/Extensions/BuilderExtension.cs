@@ -4,7 +4,7 @@ using FaturamentoService.Core.Interfaces;
 using FaturamentoService.Infrastructure.Data.UnitOfWork;
 using FaturamentoService.Infrastructure.Data.Context;
 using FaturamentoService.Infrastructure.Data.Repositories;
-using FaturamentoService.Infrastructure.Data.Clients;
+using FaturamentoService.Infrastructure.Clients;
 using Microsoft.EntityFrameworkCore;
 
 namespace FaturamentoService.Extensions;
@@ -66,7 +66,7 @@ public static class BuilderExtension
     {
         builder.Services.AddHttpClient<IEstoqueClient, EstoqueClient>(client =>
         {
-            client.BaseAddress = new Uri(FaturamentoService.Configurations.ApiConstants.BackendUrlEstoqueService);
+            client.BaseAddress = new Uri(EstoqueService.Configurations.ApiConstants.BackendUrlEstoqueService);
         });
     }
 

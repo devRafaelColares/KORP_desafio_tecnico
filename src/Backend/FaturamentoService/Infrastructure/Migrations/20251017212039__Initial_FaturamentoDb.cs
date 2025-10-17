@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FaturamentoService.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_FaturamentoDb : Migration
+    public partial class _Initial_FaturamentoDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

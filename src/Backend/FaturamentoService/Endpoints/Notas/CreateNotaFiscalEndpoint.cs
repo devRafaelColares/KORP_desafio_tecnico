@@ -3,10 +3,11 @@ using FaturamentoService.Core.Requests.Notas;
 using FaturamentoService.Core.Responses;
 using FaturamentoService.Core.Responses.Notas;
 using Microsoft.AspNetCore.Mvc;
+using FaturamentoService.Contracts;
 
 namespace FaturamentoService.Endpoints.Notas;
 
-public class CreateNotaFiscalEndpoint
+public class CreateNotaFiscalEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     {
