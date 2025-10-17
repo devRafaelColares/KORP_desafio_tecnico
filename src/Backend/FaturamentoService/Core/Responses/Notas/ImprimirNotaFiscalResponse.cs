@@ -1,3 +1,5 @@
+using EstoqueService.Core.Responses.Estoque;
+
 namespace FaturamentoService.Core.Responses.Notas;
 
 public class ImprimirNotaFiscalResponse
