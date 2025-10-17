@@ -1,3 +1,5 @@
+namespace EstoqueService.Core.Requests.Produto;
+
 public class ProdutoUpdateRequest
 {
     public string? Descricao { get; set; }

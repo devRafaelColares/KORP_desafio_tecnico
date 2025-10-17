@@ -1,5 +1,7 @@
 using EstoqueService.Configurations;
+using EstoqueService.Core.Interfaces;
 using EstoqueService.Infraestructure.Data.Context;
+using EstoqueService.Infraestructure.Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 namespace EstoqueService.Extensions;
 
