@@ -4,6 +4,7 @@ using EstoqueService.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();
 builder.AddConfiguration();
+builder.AddDataContexts();
 builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddAuthentication();

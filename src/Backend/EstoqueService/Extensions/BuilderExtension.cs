@@ -1,4 +1,6 @@
 using EstoqueService.Configurations;
+using EstoqueService.Infraestructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 namespace EstoqueService.Extensions;
 
 public static class BuilderExtension
@@ -12,6 +14,13 @@ public static class BuilderExtension
 
         ApiConstants.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
         ApiConstants.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
+    }
+
+    public static void AddDataContexts(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(ApiConstants.ConnectionString),
+            ServiceLifetime.Scoped);
     }
 
     public static void AddDocumentation(this WebApplicationBuilder builder)
