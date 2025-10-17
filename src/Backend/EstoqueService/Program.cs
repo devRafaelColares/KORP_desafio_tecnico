@@ -14,6 +14,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.ConfigureDevEnvironment();
+    await app.SeedDatabase();
 }
 
 app.UseCors("korp");
