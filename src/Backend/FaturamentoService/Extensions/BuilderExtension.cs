@@ -49,6 +49,10 @@ public static class BuilderExtension
             ));
     }
 
+    public static void AddServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
     public static void AddAuthentication(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthorizationBuilder()
