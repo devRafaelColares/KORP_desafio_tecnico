@@ -8,6 +8,9 @@ public class Response<TData>
 {
     private readonly int _code;
 
+    [JsonIgnore]
+    public int Code => _code;
+    
     [JsonConstructor]
     public Response()
         => _code = ApiConstants.DefaultStatusCode;

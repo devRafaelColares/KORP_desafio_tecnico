@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FaturamentoService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251017140445_Initial_EstoqueDb")]
-    partial class Initial_EstoqueDb
+    [Migration("20251017184838_Initial_FaturamentoDb")]
+    partial class Initial_FaturamentoDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
