@@ -2,7 +2,7 @@ using System.Reflection;
 using FaturamentoService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FaturamentoService.Infraestructure.Data.Context;
+namespace FaturamentoService.Infrastructure.Data.Context;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

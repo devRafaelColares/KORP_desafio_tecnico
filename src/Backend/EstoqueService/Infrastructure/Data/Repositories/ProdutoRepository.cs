@@ -1,9 +1,9 @@
 using EstoqueService.Core.Interfaces;
 using EstoqueService.Models;
-using EstoqueService.Infraestructure.Data.Context;
+using EstoqueService.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace EstoqueService.Infraestructure.Data.Repositories;
+namespace EstoqueService.Infrastructure.Data.Repositories;
 
 public class ProdutoRepository : IProdutoRepository
 {

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using EstoqueService.Core.Interfaces;
-using EstoqueService.Infraestructure.Data.Context;
+using EstoqueService.Infrastructure.Data.Context;
 
-namespace EstoqueService.Infraestructure.Data.UnitOfWork;
+namespace EstoqueService.Infrastructure.Data.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
@@ -42,3 +42,4 @@ public class UnitOfWork : IUnitOfWork
         _context.Dispose();
     }
 }
+

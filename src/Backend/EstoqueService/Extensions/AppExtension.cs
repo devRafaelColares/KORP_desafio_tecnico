@@ -1,6 +1,6 @@
 
-using EstoqueService.Infraestructure.Data.Context;
-using EstoqueService.Infraestructure.Data.Seeders;
+using EstoqueService.Infrastructure.Data.Context;
+using EstoqueService.Infrastructure.Data.Seeders;
 
 namespace EstoqueService.Extensions;
 public static class AppExtension

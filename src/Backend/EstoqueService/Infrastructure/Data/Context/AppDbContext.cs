@@ -2,7 +2,7 @@ using System.Reflection;
 using EstoqueService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EstoqueService.Infraestructure.Data.Context;
+namespace EstoqueService.Infrastructure.Data.Context;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

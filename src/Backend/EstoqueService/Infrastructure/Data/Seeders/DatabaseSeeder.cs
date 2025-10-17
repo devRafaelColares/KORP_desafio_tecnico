@@ -1,9 +1,9 @@
 using EstoqueService.Core.Enums;
 using EstoqueService.Models;
-using EstoqueService.Infraestructure.Data.Context;
+using EstoqueService.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace EstoqueService.Infraestructure.Data.Seeders;
+namespace EstoqueService.Infrastructure.Data.Seeders;
 
 public static class DatabaseSeeder
 {

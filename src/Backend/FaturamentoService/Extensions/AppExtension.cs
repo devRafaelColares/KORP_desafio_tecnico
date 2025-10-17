@@ -1,6 +1,6 @@
 
-using FaturamentoService.Infraestructure.Data.Context;
-using FaturamentoService.Infraestructure.Data.Seeders;
+using FaturamentoService.Infrastructure.Data.Context;
+using FaturamentoService.Infrastructure.Data.Seeders;
 
 namespace FaturamentoService.Extensions;
 public static class AppExtension

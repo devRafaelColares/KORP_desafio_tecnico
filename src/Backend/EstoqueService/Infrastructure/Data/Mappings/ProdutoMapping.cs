@@ -2,7 +2,7 @@ using EstoqueService.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EstoqueService.Infraestructure.Data.Mappings;
+namespace EstoqueService.Infrastructure.Data.Mappings;
 
 public class ProdutoMapping : IEntityTypeConfiguration<Produto>
 {

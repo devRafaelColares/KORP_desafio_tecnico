@@ -1,9 +1,9 @@
 using EstoqueService.Configurations;
 using EstoqueService.Services;
 using EstoqueService.Core.Interfaces;
-using EstoqueService.Infraestructure.Data.Context;
-using EstoqueService.Infraestructure.Data.UnitOfWork;
-using EstoqueService.Infraestructure.Data.Repositories;
+using EstoqueService.Infrastructure.Data.Context;
+using EstoqueService.Infrastructure.Data.UnitOfWork;
+using EstoqueService.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace EstoqueService.Extensions;

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using FaturamentoService.Core.Interfaces;
-using FaturamentoService.Infraestructure.Data.Context;
+using FaturamentoService.Infrastructure.Data.Context;
 
-namespace FaturamentoService.Infraestructure.Data.UnitOfWork;
+namespace FaturamentoService.Infrastructure.Data.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;

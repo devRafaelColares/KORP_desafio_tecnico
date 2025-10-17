@@ -1,9 +1,9 @@
 using FaturamentoService.Core.Enums;
 using FaturamentoService.Models;
-using FaturamentoService.Infraestructure.Data.Context;
+using FaturamentoService.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace FaturamentoService.Infraestructure.Data.Seeders;
+namespace FaturamentoService.Infrastructure.Data.Seeders;
 
 public static class DatabaseSeeder
 {
