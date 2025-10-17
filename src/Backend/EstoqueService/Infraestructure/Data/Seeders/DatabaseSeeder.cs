@@ -13,16 +13,14 @@ public static class DatabaseSeeder
         {
             if (!await context.Produtos.AnyAsync())
             {
-                Console.WriteLine("🌱 Iniciando seed dos produtos...");
+                Console.WriteLine("🌱 Seed: Produtos...");
                 await SeedProdutosAsync(context);
-                Console.WriteLine("✅ Produtos criados com sucesso!");
             }
 
             if (!await context.MovimentacoesEstoque.AnyAsync())
             {
-                Console.WriteLine("🌱 Iniciando seed das movimentações de estoque...");
+                Console.WriteLine("🌱 Seed: Movimentações...");
                 await SeedMovimentacoesAsync(context);
-                Console.WriteLine("✅ Movimentações criadas com sucesso!");
             }
         }
         catch (Exception ex)
