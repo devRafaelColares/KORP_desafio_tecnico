@@ -1,8 +1,11 @@
 using EstoqueService.Configurations;
+using EstoqueService.Services;
 using EstoqueService.Core.Interfaces;
 using EstoqueService.Infraestructure.Data.Context;
 using EstoqueService.Infraestructure.Data.UnitOfWork;
+using EstoqueService.Infraestructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+
 namespace EstoqueService.Extensions;
 
 public static class BuilderExtension
@@ -53,6 +56,10 @@ public static class BuilderExtension
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+
+        builder.Services.AddScoped<IProdutoService, ProdutoService>();
     }
 
     public static void AddAuthentication(this WebApplicationBuilder builder)
