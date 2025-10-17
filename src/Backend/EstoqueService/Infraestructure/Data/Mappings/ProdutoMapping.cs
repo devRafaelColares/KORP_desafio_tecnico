@@ -47,6 +47,7 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
         builder.Property(p => p.RowVersion)
                .IsRowVersion()
                .IsConcurrencyToken()
+               .ValueGeneratedOnAddOrUpdate()
                .HasColumnType("rowversion")
                .HasComment("Token de concorrência para controle otimista");
     }

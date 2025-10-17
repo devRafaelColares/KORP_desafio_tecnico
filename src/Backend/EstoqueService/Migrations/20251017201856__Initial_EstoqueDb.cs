@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EstoqueService.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_EstoqueDb : Migration
+    public partial class _Initial_EstoqueDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

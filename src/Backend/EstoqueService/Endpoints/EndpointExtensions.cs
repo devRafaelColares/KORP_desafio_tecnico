@@ -29,6 +29,8 @@ public static class EndpointExtensions
             .WithDescription("Endpoint para monitoramento da saúde da API.");
 
         group.MapEndpoint<GetAllProdutosEndpoint>();
+        group.MapEndpoint<CreateProdutoEndpoint>();
+        group.MapEndpoint<GetProdutoByIdEndpoint>();
     }
 
     // private static void ConfigureBusinessEndpoints(RouteGroupBuilder group)
