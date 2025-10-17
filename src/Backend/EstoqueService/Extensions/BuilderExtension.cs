@@ -13,7 +13,7 @@ public static class BuilderExtension
             .GetConnectionString("DefaultConnection") ?? string.Empty;
 
         ApiConstants.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
-        ApiConstants.BackendUrl = builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
+        ApiConstants.BackendUrlEstoqueService = builder.Configuration.GetValue<string>("BackendUrlEstoqueService") ?? string.Empty;
     }
 
     public static void AddDataContexts(this WebApplicationBuilder builder)
@@ -39,7 +39,7 @@ public static class BuilderExtension
                 ApiConfiguration.CorsPolicyName,
                 policy => policy
                     .WithOrigins([
-                        ApiConstants.BackendUrl,
+                        ApiConstants.BackendUrlEstoqueService,
                         ApiConstants.FrontendUrl
                     ])
                     .AllowAnyMethod()
