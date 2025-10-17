@@ -29,7 +29,7 @@ public static class EndpointExtensions
             .WithDescription("Endpoint para monitoramento da saúde da API.");
 
         group.MapEndpoint<CreateNotaFiscalEndpoint>();
-
+        group.MapEndpoint<PrintNotaFiscalEndpoint>();
     }
 
     // private static void ConfigureBusinessEndpoints(RouteGroupBuilder group)
