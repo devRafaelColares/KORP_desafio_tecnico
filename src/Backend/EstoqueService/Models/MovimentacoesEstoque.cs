@@ -1,4 +1,4 @@
-using EstoqueService.Enums;
+using EstoqueService.Core.Enums;
 
 namespace EstoqueService.Models;
 

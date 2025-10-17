@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace EstoqueService.Enums;
+namespace EstoqueService.Core.Enums;
 
 public enum TipoMovimentacoesEstoque
 {
