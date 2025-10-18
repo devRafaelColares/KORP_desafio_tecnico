@@ -58,8 +58,10 @@ public static class BuilderExtension
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+        builder.Services.AddScoped<IMovimentacaoEstoqueRepository, MovimentacaoEstoqueRepository>();
 
         builder.Services.AddScoped<IProdutoService, ProdutoService>();
+        builder.Services.AddScoped<IMovimentacaoEstoqueService, MovimentacaoEstoqueService>();
     }
 
     public static void AddAuthentication(this WebApplicationBuilder builder)

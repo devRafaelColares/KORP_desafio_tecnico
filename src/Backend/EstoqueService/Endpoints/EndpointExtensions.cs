@@ -1,5 +1,6 @@
 using EstoqueService.Configurations;
 using EstoqueService.Contracts;
+using EstoqueService.Endpoints.Movimentacoes;
 using EstoqueService.Endpoints.Produtos;
 
 namespace EstoqueService.Endpoints;
@@ -31,6 +32,7 @@ public static class EndpointExtensions
         group.MapEndpoint<GetAllProdutosEndpoint>();
         group.MapEndpoint<CreateProdutoEndpoint>();
         group.MapEndpoint<GetProdutoByIdEndpoint>();
+        group.MapEndpoint<ProcessarBaixaLoteEndpoint>();
     }
 
     // private static void ConfigureBusinessEndpoints(RouteGroupBuilder group)

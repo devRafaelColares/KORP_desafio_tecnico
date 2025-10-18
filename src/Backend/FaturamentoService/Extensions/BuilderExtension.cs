@@ -20,6 +20,9 @@ public static class BuilderExtension
 
         ApiConstants.FrontendUrl = builder.Configuration.GetValue<string>("FrontendUrl") ?? string.Empty;
         ApiConstants.BackendUrlFaturamentoService = builder.Configuration.GetValue<string>("BackendUrlFaturamentoService") ?? string.Empty;
+    
+        EstoqueService.Configurations.ApiConstants.BackendUrlEstoqueService = builder.Configuration.GetValue<string>("BackendUrlEstoqueService") ?? string.Empty;
+
     }
 
     public static void AddDataContexts(this WebApplicationBuilder builder)
@@ -64,7 +67,7 @@ public static class BuilderExtension
 
     public static void AddHttpClientService(this WebApplicationBuilder builder)
     {
-        builder.Services.AddHttpClient<IEstoqueClient, EstoqueClient>(client =>
+        builder.Services.AddHttpClient<IEstoqueClient, EstoqueClientResilient>(client =>
         {
             client.BaseAddress = new Uri(EstoqueService.Configurations.ApiConstants.BackendUrlEstoqueService);
         });

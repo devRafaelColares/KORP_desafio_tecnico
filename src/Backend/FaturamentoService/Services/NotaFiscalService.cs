@@ -4,6 +4,7 @@ using FaturamentoService.Core.Responses;
 using FaturamentoService.Core.Responses.Notas;
 using FaturamentoService.Models;
 using FaturamentoService.Infrastructure.Data.Context;
+using EstoqueService.Core.Requests.Movimentacoes;
 
 namespace FaturamentoService.Services;
 
@@ -105,23 +106,26 @@ public class NotaFiscalService : INotaFiscalService
         if (nota.Itens == null || nota.Itens.Count == 0)
             return new Response<NotaFiscalResponse>(null, 400, "Nota não contém itens.");
 
-        // montar lista para baixa em lote
-        var itensBaixa = nota.Itens.Select(it => new Core.Interfaces.EstoqueBaixaItem(it.ProdutoId, it.Quantidade)).ToList();
+        // Monta o request para o EstoqueService
+        var movimentacaoRequest = new MovimentacaoBatchRequest
+        {
+            Itens = nota.Itens.Select(it => new ItemBaixaEstoque
+            {
+                ProdutoId = it.ProdutoId,
+                Quantidade = it.Quantidade
+            }).ToList(),
+            Observacao = $"Baixa via impressão da NF {nota.Numero}"
+        };
 
         try
         {
-            var sucesso = await _estoqueClient.BaixarEstoqueAsync(itensBaixa);
+            var sucesso = await _estoqueClient.BaixarEstoqueAsync(movimentacaoRequest);
             if (!sucesso)
-            {
-                // EstoqueService retornou BadRequest (ex: saldo insuficiente) — repassar mensagem genérica
                 return new Response<NotaFiscalResponse>(null, 400, "Saldo insuficiente para um ou mais produtos.");
-            }
 
-            // marca nota como fechada e persiste
             nota.Status = Core.Enums.TipoStatusNF.Fechada;
             await _context.SaveChangesAsync();
 
-            // construir response
             var response = new NotaFiscalResponse
             {
                 Id = nota.Id,
