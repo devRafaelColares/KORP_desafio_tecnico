@@ -164,16 +164,16 @@ Acesse: 👉 http://localhost:4200
 ## 🎨 Interface Visual (Frontend Angular)
 
 ### 🏠 Tela Inicial
-![Home do Sistema](./src/Frontend/korp-frontend/src/assets/docs/korp_home.png)
+![Home do Sistema](./korp_home.webp)
 
 ### 💳 PDV - Ponto de Venda
-![PDV do Sistema](./src/Frontend/korp-frontend/src/assets/docs/korp_pdv.png)
+![PDV do Sistema](./korp_pdv.webp)
 
 ### 📦 Produtos
-![Tela de Produtos](./src/Frontend/korp-frontend/src/assets/docs/korp_tela-de-produtos.png)
+![Tela de Produtos](./korp_tela-de-produtos.webp)
 
 ### 🧾 Notas Fiscais
-![Tela de Notas Fiscais](./src/Frontend/korp-frontend/src/assets/docs/korp_tela-de-notas.png)
+![Tela de Notas Fiscais](./korp_tela-de-notas.webp)
 
 ---
 
