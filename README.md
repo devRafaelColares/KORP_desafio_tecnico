@@ -156,8 +156,20 @@ ng serve
 Acesse: 👉 http://localhost:4200
 
 ### 🔍 Swagger
-- EstoqueService → http://localhost:5001/swagger  
-- FaturamentoService → http://localhost:5002/swagger  
+- EstoqueService → http://localhost:5127/swagger  
+- FaturamentoService → http://localhost:5042/swagger  
+
+---
+### Swagger EstoqueService
+![http://localhost:5127/swagger](korp-estoque.webp)
+
+---
+---
+### Swagger FaturamentoService
+![http://localhost:5042/swagger](korp-faturamento.webp)
+
+---
+
 
 ---
 
