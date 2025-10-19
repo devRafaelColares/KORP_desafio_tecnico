@@ -32,6 +32,7 @@ public static class EndpointExtensions
         group.MapEndpoint<GetAllProdutosEndpoint>();
         group.MapEndpoint<CreateProdutoEndpoint>();
         group.MapEndpoint<GetProdutoByIdEndpoint>();
+        group.MapEndpoint<GetProdutoBySkuEndpoint>();
         group.MapEndpoint<ProcessarBaixaLoteEndpoint>();
     }
 

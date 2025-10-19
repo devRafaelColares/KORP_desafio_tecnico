@@ -11,4 +11,5 @@ public interface IProdutoService
     Task<PagedResponse<List<ProdutoResponse>>> GetAllAsync(int pageNumber, int pageSize);
     Task<Response<ProdutoResponse>> UpdateAsync(int id, ProdutoUpdateRequest request);
     Task<Response<bool>> DeleteAsync(int id);
+    Task<Response<ProdutoResponse>> GetBySkuAsync(string sku);
 }

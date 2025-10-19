@@ -60,6 +60,24 @@ public class ProdutoService : IProdutoService
         return new Response<ProdutoResponse>(response, 200);
     }
 
+    public async Task<Response<ProdutoResponse>> GetBySkuAsync(string sku)
+    {
+        var produto = await _produtoRepository.GetBySkuAsync(sku);
+        if (produto == null)
+            return new Response<ProdutoResponse>(null, 404, "Produto não encontrado.");
+
+        var response = new ProdutoResponse
+        {
+            Id = produto.Id,
+            Descricao = produto.Descricao,
+            CodigoSKU = produto.CodigoSKU,
+            Preco = produto.Preco,
+            Saldo = produto.Saldo
+        };
+
+        return new Response<ProdutoResponse>(response, 200);
+    }
+
     public async Task<PagedResponse<List<ProdutoResponse>>> GetAllAsync(int pageNumber, int pageSize)
     {
         var (produtos, totalCount) = await _produtoRepository.GetAllAsync(pageNumber, pageSize);
