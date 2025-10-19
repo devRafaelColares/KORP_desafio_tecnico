@@ -164,16 +164,16 @@ Acesse: 👉 http://localhost:4200
 ## 🎨 Interface Visual (Frontend Angular)
 
 ### 🏠 Tela Inicial
-![Home do Sistema](./korp_home.webp)
+![Home do Sistema](korp_home.webp)
 
 ### 💳 PDV - Ponto de Venda
-![PDV do Sistema](./korp_pdv.webp)
+![PDV do Sistema](korp_pdv.webp)
 
 ### 📦 Produtos
-![Tela de Produtos](./korp_tela-de-produtos.webp)
+![Tela de Produtos](korp_tela-de-produtos.webp)
 
 ### 🧾 Notas Fiscais
-![Tela de Notas Fiscais](./korp_tela-de-notas.webp)
+![Tela de Notas Fiscais](korp_tela-de-notas.webp)
 
 ---
 
