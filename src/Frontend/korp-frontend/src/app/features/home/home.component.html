@@ -1,0 +1,80 @@
+<div class="home-container">
+    <div class="home-content">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-logo">
+                <i class="material-icons">assessment</i>
+            </div>
+            <h1 class="hero-title">Sistema KORP</h1>
+            <p class="hero-subtitle">Gestão de Notas Fiscais e Controle de Estoque</p>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid">
+            <!-- Card PDV -->
+            <button class="menu-card pdv-card" (click)="navigateTo('/pdv')">
+                <div class="card-icon">
+                    <i class="material-icons">point_of_sale</i>
+                </div>
+                <h2 class="card-title">PDV</h2>
+                <p class="card-description">Ponto de Venda para emissão de notas fiscais</p>
+                <div class="card-footer">
+                    <span class="card-badge">Atalhos: F1-F12</span>
+                </div>
+                <div class="card-overlay">
+                    <span class="overlay-text">Acessar →</span>
+                </div>
+            </button>
+
+            <!-- Card Produtos -->
+            <button class="menu-card produtos-card" (click)="navigateTo('/produtos')">
+                <div class="card-icon">
+                    <i class="material-icons">inventory_2</i>
+                </div>
+                <h2 class="card-title">Produtos</h2>
+                <p class="card-description">Gerenciar catálogo de produtos e estoque</p>
+                <div class="card-footer">
+                    <span class="card-badge">CRUD Completo</span>
+                </div>
+                <div class="card-overlay">
+                    <span class="overlay-text">Acessar →</span>
+                </div>
+            </button>
+
+            <!-- Card Notas Fiscais -->
+            <button class="menu-card notas-card" (click)="navigateTo('/notas-fiscais')">
+                <div class="card-icon">
+                    <i class="material-icons">description</i>
+                </div>
+                <h2 class="card-title">Notas Fiscais</h2>
+                <p class="card-description">Consultar histórico de notas emitidas</p>
+                <div class="card-footer">
+                    <span class="card-badge">Em breve</span>
+                </div>
+                <div class="card-overlay">
+                    <span class="overlay-text">Acessar →</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <div class="feature-item">
+                <i class="material-icons">speed</i>
+                <span>Performance Otimizada</span>
+            </div>
+            <div class="feature-item">
+                <i class="material-icons">security</i>
+                <span>Dados Seguros</span>
+            </div>
+            <div class="feature-item">
+                <i class="material-icons">cloud</i>
+                <span>Microsserviços</span>
+            </div>
+            <div class="feature-item">
+                <i class="material-icons">support_agent</i>
+                <span>Suporte 24/7</span>
+            </div>
+        </div>
+    </div>
+</div>

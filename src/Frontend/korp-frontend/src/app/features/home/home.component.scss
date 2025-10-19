@@ -1,0 +1,234 @@
+@import '../../../styles/variables';
+
+$dark-bg: #0f172a;
+$dark-bg-secondary: #1e293b;
+$dark-bg-card: #334155;
+
+.home-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, $dark-bg 0%, #1e293b 100%);
+    padding: 2rem;
+}
+
+.home-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+// Hero Section
+.hero-section {
+    text-align: center;
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+}
+
+.hero-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 50%;
+    margin-bottom: 2rem;
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+
+    i {
+        font-size: 4rem;
+        color: white;
+    }
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 1rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+// Menu Grid
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.menu-card {
+    position: relative;
+    background: $dark-bg-secondary;
+    border: 2px solid #334155;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-8px);
+        border-color: #3b82f6;
+        box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+
+        .card-overlay {
+            opacity: 1;
+        }
+
+        .card-icon i {
+            transform: scale(1.1) rotate(5deg);
+        }
+    }
+
+    &.pdv-card:hover {
+        border-color: #10b981;
+
+        .card-overlay {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9));
+        }
+    }
+
+    &.produtos-card:hover {
+        border-color: #f59e0b;
+
+        .card-overlay {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9));
+        }
+    }
+
+    &.notas-card:hover {
+        border-color: #8b5cf6;
+
+        .card-overlay {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(124, 58, 237, 0.9));
+        }
+    }
+}
+
+.card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+
+    i {
+        font-size: 2.5rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+}
+
+.pdv-card .card-icon {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.produtos-card .card-icon {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.notas-card .card-icon {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.card-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.75rem;
+}
+
+.card-description {
+    font-size: 1rem;
+    color: #94a3b8;
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.card-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    color: #60a5fa;
+    font-weight: 600;
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.9));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+// Features Section
+.features-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    background: $dark-bg-secondary;
+    border-radius: 1rem;
+    border: 1px solid #334155;
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    text-align: center;
+
+    i {
+        font-size: 2.5rem;
+        color: #3b82f6;
+    }
+
+    span {
+        font-size: 1rem;
+        color: #cbd5e1;
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

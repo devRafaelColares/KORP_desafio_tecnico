@@ -1,0 +1,55 @@
+<div class="main-layout">
+    <!-- Header Global -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <button class="menu-toggle" (click)="toggleMenu()">
+                    <i class="material-icons">{{ isMenuOpen ? 'close' : 'menu' }}</i>
+                </button>
+                <button class="logo" (click)="navigateTo('/')">
+                    <i class="material-icons">assessment</i>
+                    <span class="logo-text">KORP</span>
+                </button>
+            </div>
+
+            <nav class="main-nav" [class.open]="isMenuOpen">
+                <button class="nav-item" [class.active]="isActive('/')" (click)="navigateTo('/')">
+                    <i class="material-icons">home</i>
+                    <span>Home</span>
+                </button>
+
+                <button class="nav-item" [class.active]="isActive('/pdv')" (click)="navigateTo('/pdv')">
+                    <i class="material-icons">point_of_sale</i>
+                    <span>PDV</span>
+                </button>
+
+                <button class="nav-item" [class.active]="isActive('/produtos')" (click)="navigateTo('/produtos')">
+                    <i class="material-icons">inventory_2</i>
+                    <span>Produtos</span>
+                </button>
+
+                <button class="nav-item" [class.active]="isActive('/notas-fiscais')"
+                    (click)="navigateTo('/notas-fiscais')">
+                    <i class="material-icons">description</i>
+                    <span>Notas</span>
+                </button>
+            </nav>
+
+            <div class="header-right">
+                <button class="user-menu">
+                    <i class="material-icons">account_circle</i>
+                    <span class="user-name">Admin</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Overlay -->
+    <div *ngIf="isMenuOpen" class="mobile-overlay" (click)="toggleMenu()">
+    </div>
+
+    <!-- Content Area -->
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
+</div>
