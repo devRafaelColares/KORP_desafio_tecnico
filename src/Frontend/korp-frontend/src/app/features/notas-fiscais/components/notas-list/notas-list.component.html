@@ -1,0 +1,344 @@
+<div class="notas-container">
+    <!-- Header -->
+    <header class="notas-header">
+        <div class="header-content">
+            <div class="header-info">
+                <i class="material-icons header-icon">description</i>
+                <div>
+                    <h1 class="header-title">Notas Fiscais</h1>
+                    <p class="header-subtitle">Gerenciamento de notas emitidas</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="notas-main">
+        <!-- Alert -->
+        <app-alert *ngIf="alert()" [type]="alert()!.type" [message]="alert()!.message" (close)="closeAlert()">
+        </app-alert>
+
+        <!-- Loading -->
+        <app-loading *ngIf="loading()"></app-loading>
+
+        <div *ngIf="!loading()">
+            <!-- Filtros -->
+            <app-card class="filtros-card">
+                <div class="filtros-container">
+                    <!-- Busca -->
+                    <div class="search-wrapper">
+                        <i class="material-icons">search</i>
+                        <input type="text" placeholder="Buscar por número, produto ou SKU..." [(ngModel)]="searchTerm"
+                            (input)="filtrarNotas()" class="search-input">
+                    </div>
+
+                    <!-- Filtro Status -->
+                    <div class="status-filter">
+                        <button class="filter-btn" [class.active]="filtroStatus === 'todos'"
+                            (click)="onFiltroStatusChange('todos')">
+                            Todos
+                        </button>
+                        <button class="filter-btn filter-success" [class.active]="filtroStatus === 'aberta'"
+                            (click)="onFiltroStatusChange('aberta')">
+                            Abertas
+                        </button>
+                        <button class="filter-btn filter-primary" [class.active]="filtroStatus === 'fechada'"
+                            (click)="onFiltroStatusChange('fechada')">
+                            Fechadas
+                        </button>
+                    </div>
+                </div>
+            </app-card>
+
+            <!-- Estatísticas -->
+            <div class="stats-grid">
+                <app-card class="stat-card">
+                    <h3 class="stat-label">Total de Notas</h3>
+                    <p class="stat-value">{{ notasFiltradas().length }}</p>
+                </app-card>
+                <app-card class="stat-card">
+                    <h3 class="stat-label">Notas Abertas</h3>
+                    <p class="stat-value stat-warning">
+                        {{ notasAbertas }}
+                    </p>
+                </app-card>
+                <app-card class="stat-card">
+                    <h3 class="stat-label">Notas Fechadas</h3>
+                    <p class="stat-value stat-success">
+                        {{ notasFechadas }}
+                    </p>
+                </app-card>
+                <app-card class="stat-card">
+                    <h3 class="stat-label">Valor Total</h3>
+                    <p class="stat-value">
+                        {{ valorTotalNotas | currency:'BRL' }}
+                    </p>
+                </app-card>
+            </div>
+
+            <!-- Tabela de Notas -->
+            <app-card>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Status</th>
+                                <th>Data</th>
+                                <th>Itens</th>
+                                <th class="text-right">Valor Total</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="notasFiltradas().length === 0">
+                                <td colspan="6" class="empty-state">
+                                    <div class="empty-content">
+                                        <i class="material-icons empty-icon">description</i>
+                                        <p class="empty-title">Nenhuma nota encontrada</p>
+                                        <p class="empty-subtitle">Altere os filtros ou cadastre uma nova nota fiscal.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let nota of notasFiltradas()" class="data-row">
+                                <td>
+                                    <strong>{{ nota.numero }}</strong>
+                                </td>
+                                <td>
+                                    <span class="badge" [ngClass]="getStatusClass(nota.status)">
+                                        {{ nota.status }}
+                                    </span>
+                                </td>
+                                <td>{{ formatarData(nota.dataEmissao) }}</td>
+                                <td>
+                                    <span class="badge badge-info">{{ nota.itens.length }} item(ns)</span>
+                                </td>
+                                <td class="text-right">
+                                    <strong>{{ nota.valorTotal | currency:'BRL' }}</strong>
+                                </td>
+                                <td class="text-center">
+                                    <div class="action-buttons">
+                                        <button class="btn-action btn-view" (click)="abrirModal(nota)"
+                                            title="Ver detalhes">
+                                            <i class="material-icons">visibility</i>
+                                            Detalhes
+                                        </button>
+                                        <button class="btn-action btn-delete"
+                                            [disabled]="nota.status === StatusNotaFiscal.Fechada"
+                                            (click)="excluirNota(nota)" title="Excluir nota">
+                                            <i class="material-icons">delete</i>
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </app-card>
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Detalhes/Edição -->
+<div *ngIf="showModal()" class="modal-overlay" (click)="fecharModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <div class="modal-title-area">
+                <i class="material-icons modal-icon">description</i>
+                <div>
+                    <h2 class="modal-title">{{ notaSelecionada()?.numero }}</h2>
+                    <span class="status-badge" [ngClass]="getStatusClass(notaSelecionada()!.status)">
+                        {{ notaSelecionada()?.status }}
+                    </span>
+                </div>
+            </div>
+            <button class="modal-close" (click)="fecharModal()">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <!-- Informações da Nota -->
+            <div class="nota-info-grid">
+                <div class="info-item">
+                    <span class="info-label">Data de Emissão</span>
+                    <span class="info-value">{{ formatarData(notaSelecionada()!.dataEmissao) }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Total de Itens</span>
+                    <span class="info-value">{{ itensEditados().length }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Valor Total</span>
+                    <span class="info-value valor-destaque">
+                        {{ formatarMoeda(calcularTotalEditado()) }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Lista de Itens -->
+            <div class="itens-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <i class="material-icons">inventory_2</i>
+                        Itens da Nota
+                    </h3>
+                    <button *ngIf="modoEdicao()" class="btn-add-produto" (click)="mostrarAddProduto()">
+                        <i class="material-icons">add</i>
+                        Adicionar Produto
+                    </button>
+                </div>
+
+                <!-- Formulário Adicionar Produto -->
+                <div *ngIf="showAddProduto()" class="add-produto-form">
+                    <div class="form-header">
+                        <h4>
+                            <i class="material-icons">add_shopping_cart</i>
+                            Adicionar Produto à Nota
+                        </h4>
+                        <button class="btn-cancel" (click)="cancelarAddProduto()">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+
+                    <div class="search-produto-wrapper">
+                        <i class="material-icons">search</i>
+                        <input #searchProdutoInput type="text" placeholder="Buscar produto por descrição ou SKU..."
+                            [(ngModel)]="searchProduto" (input)="onSearchProdutoChange()" class="search-produto-input">
+                    </div>
+
+                    <div *ngIf="produtosFiltrados().length > 0" class="produtos-results">
+                        <button *ngFor="let produto of produtosFiltrados()" class="produto-result"
+                            (click)="selecionarProdutoParaAdicionar(produto)">
+                            <div class="produto-info">
+                                <span class="produto-desc">{{ produto.descricao }}</span>
+                                <span class="sku-badge">{{ produto.codigoSKU }}</span>
+                            </div>
+                            <div class="produto-details">
+                                <span class="produto-preco">{{ produto.preco | currency:'BRL' }}</span>
+                                <span class="badge" [ngClass]="produto.saldo > 0 ? 'badge-success' : 'badge-danger'">
+                                    Estoque: {{ produto.saldo }}
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div *ngIf="produtoSelecionado" class="produto-selecionado">
+                        <div class="produto-selecionado-info">
+                            <i class="material-icons">check_circle</i>
+                            <div>
+                                <strong>{{ produtoSelecionado.descricao }}</strong>
+                                <span class="sku-badge">{{ produtoSelecionado.codigoSKU }}</span>
+                                <span class="produto-preco">{{ produtoSelecionado.preco | currency:'BRL' }}</span>
+                            </div>
+                        </div>
+                        <div class="quantidade-wrapper">
+                            <label for="quantidadeNova">Quantidade:</label>
+                            <input type="number" id="quantidadeNova" min="1" [max]="produtoSelecionado.saldo"
+                                [(ngModel)]="quantidadeNova" class="quantidade-input">
+                            <span class="quantidade-hint">Máx: {{ produtoSelecionado.saldo }}</span>
+                        </div>
+                        <button class="btn-confirmar-adicionar" (click)="adicionarProduto()">
+                            <i class="material-icons">add_shopping_cart</i>
+                            Adicionar à Nota
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabela de Itens -->
+                <div class="itens-table-wrapper">
+                    <table class="itens-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Descrição</th>
+                                <th class="text-center">Quantidade</th>
+                                <th class="text-right">Preço Unit.</th>
+                                <th class="text-right">Subtotal</th>
+                                <th *ngIf="modoEdicao()" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="itensEditados().length === 0">
+                                <td [attr.colspan]="modoEdicao() ? 6 : 5" class="empty-state">
+                                    <div class="empty-content">
+                                        <i class="material-icons empty-icon">inventory_2</i>
+                                        <p>Nenhum item na nota fiscal.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let item of itensEditados(); let i = index" class="item-row">
+                                <td>
+                                    <span class="sku-badge">{{ item.produto?.codigoSKU }}</span>
+                                </td>
+                                <td>
+                                    <strong>{{ item.produto?.descricao }}</strong>
+                                </td>
+                                <td class="text-center">
+                                    <input *ngIf="modoEdicao()" type="number" min="1" [value]="item.quantidade"
+                                        (change)="atualizarQuantidade(i, $any($event.target).value)"
+                                        class="quantidade-input-table">
+                                    <span *ngIf="!modoEdicao()" class="quantidade-display">
+                                        {{ item.quantidade }}
+                                    </span>
+                                </td>
+                                <td class="text-right">{{ item.precoUnitario | currency:'BRL' }}</td>
+                                <td class="text-right">
+                                    <strong>{{ item.subtotal | currency:'BRL' }}</strong>
+                                </td>
+                                <td *ngIf="modoEdicao()" class="text-center">
+                                    <button class="btn-remove-item" (click)="removerItem(i)" title="Remover item">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="itensEditados().length > 0" class="total-row">
+                                <td [attr.colspan]="modoEdicao() ? 4 : 3" class="text-right">
+                                    <strong>TOTAL:</strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong class="total-value">{{ calcularTotalEditado() | currency:'BRL' }}</strong>
+                                </td>
+                                <td *ngIf="modoEdicao()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <div class="footer-info">
+                <i class="material-icons">info</i>
+                <span *ngIf="modoEdicao()">
+                    Nota em edição - Salve as alterações antes de imprimir
+                </span>
+                <span *ngIf="!modoEdicao()">
+                    Nota finalizada - Não é possível editar
+                </span>
+            </div>
+            <div class="footer-actions">
+                <button class="btn-secondary" (click)="fecharModal()">
+                    <i class="material-icons">close</i>
+                    Fechar
+                </button>
+
+                <div *ngIf="modoEdicao()" class="edit-actions">
+                    <button class="btn-primary" (click)="salvarAlteracoes()" [disabled]="itensEditados().length === 0">
+                        <i class="material-icons">save</i>
+                        Salvar Alterações
+                    </button>
+                    <button class="btn-success" (click)="imprimirNota()" [disabled]="itensEditados().length === 0">
+                        <i class="material-icons">print</i>
+                        Imprimir e Finalizar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

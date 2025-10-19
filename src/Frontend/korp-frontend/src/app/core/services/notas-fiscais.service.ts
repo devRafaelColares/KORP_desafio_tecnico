@@ -40,6 +40,10 @@ export class NotasFiscaisService {
         );
     }
 
+    update(id: number, data: { itens: { produtoId: number; quantidade: number }[] }): Observable<Response<NotaFiscal>> {
+        return this.http.put<Response<NotaFiscal>>(`${this.apiUrl}/${id}`, data);
+    }
+
     delete(id: number): Observable<Response<void>> {
         return this.http.delete<Response<void>>(`${this.apiUrl}/${id}`);
     }
