@@ -1,0 +1,323 @@
+<div class="pdv-container">
+    <!-- Header -->
+    <header class="pdv-header">
+        <div class="header-content">
+            <div class="header-info">
+                <i class="material-icons header-icon">shopping_cart</i>
+                <div>
+                    <h1 class="header-title">PDV - Ponto de Venda</h1>
+                    <p class="header-subtitle">Sistema de Notas Fiscais</p>
+                </div>
+            </div>
+            <button class="btn-shortcuts" (click)="showShortcuts.set(true)">
+                <i class="material-icons">keyboard</i>
+                <span>Atalhos (F12)</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pdv-main">v
+        <!-- Alert -->
+        <app-alert *ngIf="alert()" [type]="alert()!.type" [message]="alert()!.message" (close)="closeAlert()">
+        </app-alert>
+
+        <!-- Loading -->
+        <app-loading *ngIf="loading()"></app-loading>
+
+        <div class="pdv-grid" *ngIf="!loading()">
+            <!-- Painel Esquerdo -->
+            <div class="pdv-left">
+                <!-- Card de Busca -->
+                <div class="card search-card">
+                    <h2 class="card-title">
+                        <i class="material-icons">search</i>
+                        Buscar Produto
+                    </h2>
+
+                    <div class="search-buttons">
+                        <button class="search-btn" [class.active]="searchMode === 'sku'" (click)="iniciarBusca('sku')">
+                            <kbd class="kbd">F1</kbd>
+                            <span>Buscar por SKU</span>
+                        </button>
+
+                        <button class="search-btn" [class.active]="searchMode === 'descricao'"
+                            (click)="iniciarBusca('descricao')">
+                            <kbd class="kbd">F2</kbd>
+                            <span>Buscar por Descrição</span>
+                        </button>
+                    </div>
+
+                    <div *ngIf="searchMode" class="search-input-area">
+                        <input #searchInput type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()"
+                            [placeholder]="searchMode === 'sku' ? 'Digite o código SKU...' : 'Digite a descrição...'"
+                            class="search-input" autofocus>
+
+                        <div *ngIf="produtosFiltrados().length > 0" class="search-results">
+                            <button *ngFor="let produto of produtosFiltrados()" class="result-item"
+                                (click)="selecionarProduto(produto)">
+                                <div class="result-info">
+                                    <p class="result-sku">{{ produto.codigoSKU }}</p>
+                                    <p class="result-desc">{{ produto.descricao }}</p>
+                                </div>
+                                <div class="result-details">
+                                    <p class="result-price">R$ {{ produto.preco | number:'1.2-2' }}</p>
+                                    <p class="result-stock" [class.out-of-stock]="produto.saldo === 0">
+                                        Est: {{ produto.saldo }}
+                                    </p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produto Selecionado -->
+                <div *ngIf="produtoSelecionado" class="card selected-product">
+                    <h3 class="selected-label">PRODUTO SELECIONADO</h3>
+                    <div class="selected-info">
+                        <p class="selected-sku">{{ produtoSelecionado.codigoSKU }}</p>
+                        <p class="selected-desc">{{ produtoSelecionado.descricao }}</p>
+                        <div class="selected-details">
+                            <span class="selected-price">R$ {{ produtoSelecionado.preco | number:'1.2-2' }}</span>
+                            <span class="selected-stock">Disponível: {{ produtoSelecionado.saldo }} un</span>
+                        </div>
+                    </div>
+
+                    <div class="quantity-section">
+                        <div class="quantity-input-group">
+                            <label class="quantity-label">Quantidade</label>
+                            <input #quantidadeInput type="number" min="1" [max]="produtoSelecionado.saldo"
+                                [(ngModel)]="quantidade" class="quantity-input">
+                            <p class="quantity-hint">Use +/- para ajustar</p>
+                        </div>
+
+                        <button class="btn-add-item" (click)="adicionarItem()">
+                            <i class="material-icons">add</i>
+                            Adicionar (F3)
+                        </button>
+                    </div>
+
+                    <div class="subtotal-box">
+                        <p class="subtotal-label">Subtotal:</p>
+                        <p class="subtotal-value">
+                            R$ {{ (quantidade * produtoSelecionado.preco) | number:'1.2-2' }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Lista de Itens -->
+                <div class="card items-card">
+                    <div class="items-header">
+                        <h2 class="card-title">
+                            <i class="material-icons">description</i>
+                            Itens da Nota
+                        </h2>
+                        <span class="items-count">{{ itensNota().length }} item(ns)</span>
+                    </div>
+
+                    <div class="items-list">
+                        <!-- Empty State -->
+                        <div *ngIf="itensNota().length === 0" class="empty-state">
+                            <i class="material-icons empty-icon">inventory_2</i>
+                            <p class="empty-title">Nenhum item adicionado</p>
+                            <p class="empty-subtitle">Use F1 ou F2 para buscar produtos</p>
+                        </div>
+
+                        <!-- Items -->
+                        <div *ngFor="let item of itensNota(); let i = index" class="item-row">
+                            <div class="item-info">
+                                <p class="item-sku">{{ item.produto?.codigoSKU }}</p>
+                                <p class="item-desc">{{ item.produto?.descricao }}</p>
+                                <p class="item-details">
+                                    {{ item.quantidade }} x R$ {{ item.precoUnitario | number:'1.2-2' }}
+                                </p>
+                            </div>
+                            <div class="item-actions">
+                                <p class="item-total">R$ {{ item.subtotal | number:'1.2-2' }}</p>
+                                <button class="btn-remove-item" (click)="removerItem(i)" title="Remover item">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel Direito -->
+            <div class="pdv-right">
+                <!-- Nota Fiscal -->
+                <div class="card nota-card">
+                    <h3 class="card-title">Nota Fiscal</h3>
+                    <div class="nota-info">
+                        <div class="nota-field">
+                            <p class="nota-label">Número</p>
+                            <p class="nota-value nota-numero">{{ notaAtual()?.numero }}</p>
+                        </div>
+                        <div class="nota-field">
+                            <p class="nota-label">Status</p>
+                            <span class="nota-status status-aberta">
+                                {{ notaAtual()?.status }}
+                            </span>
+                        </div>
+                        <div class="nota-field">
+                            <p class="nota-label">Data</p>
+                            <p class="nota-value">{{ notaAtual()?.dataEmissao | date:'dd/MM/yyyy' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total -->
+                <div class="card total-card">
+                    <p class="total-label">TOTAL DA NOTA</p>
+                    <p class="total-value">R$ {{ calcularTotal() | number:'1.2-2' }}</p>
+                    <p class="total-items">{{ itensNota().length }} item(ns)</p>
+                </div>
+
+                <!-- Ações -->
+                <div class="actions-section">
+                    <button class="btn-action btn-print" [disabled]="loading() || itensNota().length === 0"
+                        (click)="imprimirNota()">
+                        <i class="material-icons">print</i>
+                        {{ loading() ? 'Processando...' : 'Imprimir (F9)' }}
+                    </button>
+
+                    <button class="btn-action btn-clear" [disabled]="itensNota().length === 0" (click)="limparNota()">
+                        Limpar Nota (F5)
+                    </button>
+
+                    <button class="btn-action btn-remove-last" [disabled]="itensNota().length === 0"
+                        (click)="removerUltimoItem()">
+                        <i class="material-icons">delete</i>
+                        Remover Último (F4)
+                    </button>
+
+                    <button class="btn-action btn-new" (click)="iniciarNovaNota()">
+                        Nova Nota (F10)
+                    </button>
+                </div>
+
+                <!-- Atalhos Rápidos -->
+                <div class="card shortcuts-card">
+                    <h4 class="shortcuts-title">ATALHOS RÁPIDOS</h4>
+                    <div class="shortcuts-list">
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Buscar SKU</span>
+                            <kbd class="kbd kbd-blue">F1</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Buscar Descrição</span>
+                            <kbd class="kbd kbd-blue">F2</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Adicionar Item</span>
+                            <kbd class="kbd kbd-blue">F3</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Imprimir</span>
+                            <kbd class="kbd kbd-green">F9</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Ver Todos</span>
+                            <kbd class="kbd kbd-gray">F12</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Status -->
+        <div class="status-bar">
+            <div class="status-content">
+                <div class="status-left">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Sistema Online</span>
+                    </div>
+                    <div class="status-operator">
+                        Operador: <span class="operator-name">Admin</span>
+                    </div>
+                </div>
+                <div class="status-hint">
+                    Pressione <kbd class="kbd kbd-blue">F12</kbd> para ver todos os atalhos
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Atalhos -->
+<div *ngIf="showShortcuts()" class="modal-overlay" (click)="showShortcuts.set(false)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title-area">
+                <i class="material-icons modal-icon">keyboard</i>
+                <h2 class="modal-title">Atalhos do Teclado</h2>
+            </div>
+            <button class="modal-close" (click)="showShortcuts.set(false)">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="shortcuts-grid">
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F1</kbd>
+                    <span class="shortcut-text">Buscar produto por SKU</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F2</kbd>
+                    <span class="shortcut-text">Buscar produto por descrição</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F3</kbd>
+                    <span class="shortcut-text">Adicionar item à nota</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F4</kbd>
+                    <span class="shortcut-text">Remover último item</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F5</kbd>
+                    <span class="shortcut-text">Limpar nota atual</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F9</kbd>
+                    <span class="shortcut-text">Imprimir nota (processar)</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F10</kbd>
+                    <span class="shortcut-text">Nova nota</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">F12</kbd>
+                    <span class="shortcut-text">Ver atalhos</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">ESC</kbd>
+                    <span class="shortcut-text">Cancelar ação</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">Enter</kbd>
+                    <span class="shortcut-text">Confirmar ação</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">Tab</kbd>
+                    <span class="shortcut-text">Navegar campos</span>
+                </div>
+                <div class="shortcut-box">
+                    <kbd class="kbd-large">+/-</kbd>
+                    <span class="shortcut-text">Ajustar quantidade</span>
+                </div>
+            </div>
+
+            <div class="modal-tip">
+                <i class="material-icons tip-icon">lightbulb</i>
+                <p class="tip-text">
+                    <strong>Dica:</strong> Pressione
+                    <kbd class="kbd kbd-blue">F12</kbd>
+                    a qualquer momento para ver esta tela.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

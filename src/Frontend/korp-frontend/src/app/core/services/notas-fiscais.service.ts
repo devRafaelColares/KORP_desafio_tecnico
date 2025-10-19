@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import {
     NotaFiscal,
     NotaFiscalCreateRequest,
-    NotaFiscalImpressaoResponse
+    // NotaFiscalImpressaoResponse
 } from '../models/nota-fiscal.model';
 import { Response, PagedResponse } from '../models/response.model';
 
