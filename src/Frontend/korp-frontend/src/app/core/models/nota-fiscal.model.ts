@@ -1,8 +1,8 @@
-import { Produto } from "./produto.model";
+import { Produto } from './produto.model';
 
 export interface NotaFiscal {
     id: number;
-    numeroNota: string;
+    numero: string;
     status: StatusNotaFiscal;
     dataEmissao: Date;
     dataCriacao: Date;
@@ -24,28 +24,30 @@ export interface ItemNotaFiscal {
     subtotal: number;
 }
 
+// Requests
 export interface NotaFiscalCreateRequest {
-    numeroNota: string;
+    numero: string;
     itens: ItemNotaFiscalCreateRequest[];
 }
 
 export interface ItemNotaFiscalCreateRequest {
     produtoId: number;
     quantidade: number;
-    precoUnitario: number;
 }
 
-export interface NotaFiscalImpressaoRequest {
-    notaFiscalId: number;
+export interface ImprimirNotaFiscalRequest {
+    usuarioResponsavel?: string;
 }
 
-export interface NotaFiscalImpressaoResponse {
+// Responses
+export interface ImprimirNotaFiscalResponse {
     sucesso: boolean;
-    mensagem: string;
-    detalhes?: BaixaEstoqueDetalhe[];
+    mensagem?: string;
+    notaFiscal?: NotaFiscal;
+    resultadosBaixaEstoque?: BaixaProdutoResultado[];
 }
 
-export interface BaixaEstoqueDetalhe {
+export interface BaixaProdutoResultado {
     produtoId: number;
     codigoSKU: string;
     quantidade: number;
