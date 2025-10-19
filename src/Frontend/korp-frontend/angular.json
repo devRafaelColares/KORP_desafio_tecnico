@@ -13,21 +13,18 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/korp-frontend",
+            "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "inlineStyleLanguage": "scss",
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/custom-theme.scss",
-              "src/styles.css"
-            ]
+              "src/styles/styles.scss",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -84,10 +81,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/custom-theme.scss",
-              "src/styles/_reset.scss",
-              "src/styles/_utilities.scss",
-              "src/styles/_variables.scss"
+              "src/custom-theme.scss"
             ]
           }
         }
