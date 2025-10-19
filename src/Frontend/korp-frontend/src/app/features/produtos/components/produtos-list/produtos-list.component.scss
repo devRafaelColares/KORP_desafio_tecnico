@@ -1,0 +1,309 @@
+@import '../../../../../styles/variables';
+
+:host {
+    display: block;
+}
+
+.page-container {
+    min-height: 100vh;
+    background: $gray-50;
+}
+
+.content-wrapper {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 $spacing-lg $spacing-2xl;
+
+    @media (max-width: $breakpoint-md) {
+        padding: 0 $spacing-md $spacing-xl;
+    }
+}
+
+// Search Card Específico
+.search-card {
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+
+    .search-wrapper {
+        position: relative;
+
+        i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: $gray-400;
+            font-size: 1.25rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: 1px solid $gray-300;
+            border-radius: $radius-lg;
+            font-size: $font-size-base;
+            transition: all 0.2s ease;
+
+            &:focus {
+                outline: none;
+                border-color: $primary;
+                box-shadow: 0 0 0 3px rgba($primary, 0.1);
+            }
+
+            &::placeholder {
+                color: $gray-400;
+            }
+        }
+    }
+}
+
+// Stats Grid
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+
+    @media (max-width: $breakpoint-sm) {
+        grid-template-columns: 1fr;
+    }
+
+    app-card {
+        .stat-label {
+            display: block;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: $gray-600;
+            margin-bottom: $spacing-sm;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: $gray-900;
+            margin: 0;
+            line-height: 1;
+
+            &.stat-success {
+                color: $success;
+            }
+
+            &.stat-danger {
+                color: $danger;
+            }
+
+            &.stat-warning {
+                color: $warning;
+            }
+        }
+    }
+}
+
+// Table Wrapper
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+// Data Table
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: $font-size-sm;
+
+    thead {
+        background: $gray-50;
+        border-bottom: 2px solid $gray-200;
+
+        tr th {
+            padding: $spacing-md $spacing-lg;
+            text-align: left;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            color: $gray-600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+
+            &.text-right {
+                text-align: right;
+            }
+
+            &.text-center {
+                text-align: center;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            border-bottom: 1px solid $gray-200;
+            transition: background-color 0.15s ease;
+
+            &:hover {
+                background: $gray-50;
+            }
+
+            &.data-row td {
+                padding: $spacing-md $spacing-lg;
+                color: $gray-900;
+                vertical-align: middle;
+
+                &.text-right {
+                    text-align: right;
+                }
+
+                &.text-center {
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    // Empty State
+    .empty-state {
+        padding: $spacing-2xl $spacing-md !important;
+        text-align: center;
+        color: $gray-500;
+
+        i {
+            font-size: 3rem;
+            color: $gray-300;
+            display: block;
+            margin-bottom: $spacing-md;
+        }
+
+        .empty-title {
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: $gray-700;
+            margin-bottom: $spacing-xs;
+        }
+
+        .empty-subtitle {
+            font-size: $font-size-sm;
+            color: $gray-500;
+        }
+    }
+}
+
+// SKU Badge
+.sku-badge {
+    display: inline-block;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: $font-size-sm;
+    font-weight: 700;
+    padding: $spacing-xs $spacing-sm;
+    background: $gray-100;
+    border: 1px solid $gray-200;
+    border-radius: $radius-sm;
+    color: $gray-800;
+}
+
+// Status Badge
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &.badge-success {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    &.badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    &.badge-danger {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+}
+
+// Action Buttons
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+
+    i {
+        font-size: 1.125rem;
+    }
+
+    &.btn-edit {
+        color: $primary;
+
+        &:hover {
+            background: rgba($primary, 0.1);
+        }
+    }
+
+    &.btn-delete {
+        color: $danger;
+
+        &:hover {
+            background: rgba($danger, 0.1);
+        }
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+// Form Container (dentro do modal)
+.form-container {
+    .modal-actions {
+        display: flex;
+        gap: $spacing-md;
+        margin-top: $spacing-xl;
+
+        button {
+            flex: 1;
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+    .data-table {
+        font-size: $font-size-xs;
+
+        thead tr th,
+        tbody tr td {
+            padding: $spacing-sm;
+        }
+    }
+
+    .btn-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+
+        i {
+            font-size: 1rem;
+        }
+    }
+}
