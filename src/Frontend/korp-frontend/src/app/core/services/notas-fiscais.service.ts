@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import {
     NotaFiscal,
     NotaFiscalCreateRequest,
-    // NotaFiscalImpressaoResponse
+    ImprimirNotaFiscalResponse
 } from '../models/nota-fiscal.model';
 import { Response, PagedResponse } from '../models/response.model';
 
@@ -33,8 +33,8 @@ export class NotasFiscaisService {
         return this.http.post<Response<NotaFiscal>>(this.apiUrl, nota);
     }
 
-    imprimir(notaFiscalId: number): Observable<Response<NotaFiscalImpressaoResponse>> {
-        return this.http.post<Response<NotaFiscalImpressaoResponse>>(
+    imprimir(notaFiscalId: number): Observable<Response<ImprimirNotaFiscalResponse>> {
+        return this.http.post<Response<ImprimirNotaFiscalResponse>>(
             `${this.apiUrl}/${notaFiscalId}/imprimir`,
             {}
         );

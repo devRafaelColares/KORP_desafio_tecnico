@@ -12,12 +12,12 @@ export const notasFiscaisRoutes: Routes = [
             import('./components/pdv/pdv.component')
                 .then(m => m.PdvComponent),
         title: 'PDV - Ponto de Venda'
-    },
-    {
-        path: 'lista',
-        loadComponent: () =>
-            import('./components/notas-list/notas-list.component')
-                .then(m => m.NotasListComponent),
-        title: 'Notas Fiscais'
     }
+    // {
+    //     path: 'lista',
+    //     loadComponent: () =>
+    //         import('./components/notas-list/notas-list.component')
+    //             .then(m => m.NotasListComponent),
+    //     title: 'Notas Fiscais'
+    // }
 ];
