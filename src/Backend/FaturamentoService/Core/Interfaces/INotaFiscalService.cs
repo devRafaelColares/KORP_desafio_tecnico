@@ -8,5 +8,7 @@ public interface INotaFiscalService
 {
     Task<Response<NotaFiscalResponse>> CreateAsync(NotaFiscalCreateRequest request);
     Task<Response<NotaFiscalResponse>> GetByIdAsync(int id);
-    Task<Response<NotaFiscalResponse>> PrintAsync(int id);
+    Task<Response<ImprimirNotaFiscalResponse>> PrintAsync(int id, ImprimirNotaFiscalRequest? request = null);
+    Task<Response<object>> DeleteAsync(int id);
+    Task<PagedResponse<List<NotaFiscalResponse>>> GetAllAsync(int pageNumber, int pageSize);
 }

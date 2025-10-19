@@ -1,11 +1,10 @@
-using EstoqueService.Core.Responses.Estoque;
-
 namespace FaturamentoService.Core.Responses.Notas;
 
 public class ImprimirNotaFiscalResponse
 {
-    public bool Sucesso { get; set; }
-    public string? Mensagem { get; set; }
-    public NotaFiscalResponse? NotaFiscal { get; set; }
-    public List<BaixaProdutoResultado>? ResultadosBaixaEstoque { get; set; }
+    public int Id { get; set; }
+    public string Numero { get; set; } = string.Empty;
+    public int Status { get; set; }
+    public DateTime DataEmissao { get; set; }
+    public List<ItemNotaFiscalResponse> Itens { get; set; } = new();
 }

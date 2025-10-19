@@ -2,6 +2,7 @@ using EstoqueService.Core.Enums;
 using EstoqueService.Core.Interfaces;
 using EstoqueService.Core.Requests.Movimentacoes;
 using EstoqueService.Core.Responses;
+using EstoqueService.Core.Responses.Estoque;
 using EstoqueService.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,87 +27,158 @@ public class MovimentacaoEstoqueService : IMovimentacaoEstoqueService
         _unitOfWork = unitOfWork;
     }
 
-    /// <summary>
-    /// Processa baixa de estoque em lote com controle transacional
-    /// </summary>
-    public async Task<Response<bool>> ProcessarBaixaEmLoteAsync(MovimentacaoBatchRequest request)
+    public async Task<Response<BaixaProdutoResultado>> ProcessarMovimentacaoAsync(MovimentacaoEstoqueRequest request)
     {
-        if (request.Itens == null || request.Itens.Count == 0)
-            return new Response<bool>(false, 400, "Nenhum item informado para baixa.");
+        if (request.Quantidade <= 0)
+            return new Response<BaixaProdutoResultado>(null, 400, "Quantidade inválida.");
 
         try
         {
-            // Inicia transação para garantir atomicidade
             await _unitOfWork.BeginTransactionAsync();
 
-            var movimentacoes = new List<MovimentacaoEstoque>();
-            var erros = new List<string>();
+            // Busca produto
+            var produto = await _produtoRepository.GetByIdAsync(request.ProdutoId);
+            if (produto == null)
+            {
+                await _unitOfWork.RollbackAsync();
+                return new Response<BaixaProdutoResultado>(null, 404, "Produto não encontrado.");
+            }
+
+            // Validação de saldo para saída
+            if (request.Tipo == TipoMovimentacoesEstoque.Saida && produto.Saldo < request.Quantidade)
+            {
+                await _unitOfWork.RollbackAsync();
+                return new Response<BaixaProdutoResultado>(null, 400, $"Saldo insuficiente para produto '{produto.Descricao}' (SKU: {produto.CodigoSKU}).");
+            }
+
+            // Atualiza saldo
+            produto.Saldo += (request.Tipo == TipoMovimentacoesEstoque.Entrada ? request.Quantidade : -request.Quantidade);
+            await _produtoRepository.UpdateAsync(produto);
+
+            // Registra movimentação
+            var movimentacao = new MovimentacaoEstoque
+            {
+                ProdutoId = produto.Id,
+                Data = DateTime.UtcNow,
+                Quantidade = request.Quantidade,
+                Tipo = request.Tipo,
+                Observacao = request.Observacao
+            };
+            await _movimentacaoRepository.AddAsync(movimentacao);
+
+            await _unitOfWork.CommitAsync();
+
+            var resultado = new BaixaProdutoResultado
+            {
+                ProdutoId = produto.Id,
+                SaldoFinal = produto.Saldo,
+                QuantidadeMovimentada = request.Quantidade,
+                Tipo = request.Tipo,
+                Sucesso = true,
+                Mensagem = "Movimentação realizada com sucesso."
+            };
+
+            return new Response<BaixaProdutoResultado>(resultado, 200);
+        }
+        catch (Exception ex)
+        {
+            await _unitOfWork.RollbackAsync();
+            return new Response<BaixaProdutoResultado>(null, 500, $"Erro ao processar movimentação: {ex.Message}");
+        }
+    }
+
+    public async Task<Response<List<BaixaProdutoResultado>>> ProcessarBaixaLoteAsync(MovimentacaoBatchRequest request)
+    {
+        var resultados = new List<BaixaProdutoResultado>();
+        var erros = new List<string>();
+
+        if (request.Itens == null || request.Itens.Count == 0)
+            return new Response<List<BaixaProdutoResultado>>(null, 400, "Nenhum item informado para movimentação.");
+
+        try
+        {
+            await _unitOfWork.BeginTransactionAsync();
 
             foreach (var item in request.Itens)
             {
-                // Validações de negócio
                 if (item.Quantidade <= 0)
                 {
                     erros.Add($"Quantidade inválida para produto {item.ProdutoId}.");
+                    resultados.Add(new BaixaProdutoResultado
+                    {
+                        ProdutoId = item.ProdutoId,
+                        QuantidadeMovimentada = item.Quantidade,
+                        Sucesso = false,
+                        Mensagem = "Quantidade inválida."
+                    });
                     continue;
                 }
 
-                // Busca produto com lock pessimista para evitar condição de corrida
                 var produto = await _produtoRepository.GetByIdAsync(item.ProdutoId);
-
                 if (produto == null)
                 {
                     erros.Add($"Produto {item.ProdutoId} não encontrado.");
+                    resultados.Add(new BaixaProdutoResultado
+                    {
+                        ProdutoId = item.ProdutoId,
+                        QuantidadeMovimentada = item.Quantidade,
+                        Sucesso = false,
+                        Mensagem = "Produto não encontrado."
+                    });
                     continue;
                 }
 
-                // Validação crítica: saldo suficiente
                 if (produto.Saldo < item.Quantidade)
                 {
-                    erros.Add($"Saldo insuficiente para produto '{produto.Descricao}' (SKU: {produto.CodigoSKU}). Disponível: {produto.Saldo}, Solicitado: {item.Quantidade}");
+                    erros.Add($"Saldo insuficiente para produto '{produto.Descricao}' (SKU: {produto.CodigoSKU}).");
+                    resultados.Add(new BaixaProdutoResultado
+                    {
+                        ProdutoId = produto.Id,
+                        QuantidadeMovimentada = item.Quantidade,
+                        SaldoFinal = produto.Saldo,
+                        Sucesso = false,
+                        Mensagem = "Saldo insuficiente."
+                    });
                     continue;
                 }
 
-                // Baixa o saldo
                 produto.Saldo -= item.Quantidade;
                 await _produtoRepository.UpdateAsync(produto);
 
-                // Registra movimentação
                 var movimentacao = new MovimentacaoEstoque
                 {
                     ProdutoId = produto.Id,
                     Data = DateTime.UtcNow,
                     Quantidade = item.Quantidade,
                     Tipo = TipoMovimentacoesEstoque.Saida,
-                    Observacao = request.Observacao ?? "Baixa via impressão de nota fiscal"
+                    Observacao = request.Observacao ?? "Movimentação em lote"
                 };
-                movimentacoes.Add(movimentacao);
+                await _movimentacaoRepository.AddAsync(movimentacao);
+
+                resultados.Add(new BaixaProdutoResultado
+                {
+                    ProdutoId = produto.Id,
+                    QuantidadeMovimentada = item.Quantidade,
+                    SaldoFinal = produto.Saldo,
+                    Tipo = TipoMovimentacoesEstoque.Saida,
+                    Sucesso = true,
+                    Mensagem = "Movimentação realizada com sucesso."
+                });
             }
 
-            // Se houver erros, rollback e retorna
             if (erros.Any())
             {
                 await _unitOfWork.RollbackAsync();
-                return new Response<bool>(false, 400, string.Join(" | ", erros));
+                return new Response<List<BaixaProdutoResultado>>(resultados, 400, string.Join(" | ", erros));
             }
 
-            // Persiste movimentações
-            await _movimentacaoRepository.AddRangeAsync(movimentacoes);
-
-            // Commit da transação
             await _unitOfWork.CommitAsync();
-
-            return new Response<bool>(true, 200, $"Baixa de estoque processada com sucesso. {movimentacoes.Count} item(ns) movimentado(s).");
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            await _unitOfWork.RollbackAsync();
-            return new Response<bool>(false, 409, "Conflito de concorrência detectado. O estoque foi alterado por outro processo. Tente novamente.");
+            return new Response<List<BaixaProdutoResultado>>(resultados, 200, "Movimentação em lote realizada com sucesso.");
         }
         catch (Exception ex)
         {
             await _unitOfWork.RollbackAsync();
-            return new Response<bool>(false, 500, $"Erro ao processar baixa: {ex.Message}");
+            return new Response<List<BaixaProdutoResultado>>(null, 500, $"Erro ao processar movimentação em lote: {ex.Message}");
         }
     }
 }

@@ -4,6 +4,7 @@ using EstoqueService.Core.Responses.Estoque;
 using EstoqueService.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 using EstoqueService.Contracts;
+using EstoqueService.Core.Requests.Movimentacoes;
 
 namespace EstoqueService.Endpoints.Movimentacoes;
 
