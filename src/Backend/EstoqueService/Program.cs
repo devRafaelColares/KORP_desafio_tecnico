@@ -1,3 +1,4 @@
+using EstoqueService.Configurations;
 using EstoqueService.Endpoints;
 using EstoqueService.Extensions;
 
@@ -18,7 +19,7 @@ if (app.Environment.IsDevelopment())
     await app.SeedDatabase();
 }
 
-app.UseCors("korp");
+app.UseCors(ApiConfiguration.CorsPolicyName);
 app.UseAuthorization();
 
 app.MapEndpoints();

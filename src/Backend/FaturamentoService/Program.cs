@@ -1,3 +1,4 @@
+using EstoqueService.Configurations;
 using FaturamentoService.Endpoints;
 using FaturamentoService.Extensions;
 
@@ -19,7 +20,7 @@ if (app.Environment.IsDevelopment())
     await app.SeedDatabase();
 }
 
-app.UseCors("korp");
+app.UseCors(ApiConfiguration.CorsPolicyName);
 app.UseAuthorization();
 
 app.MapEndpoints();
