@@ -12,12 +12,12 @@ export const routes: Routes = [
             import('./features/produtos/produtos.routes')
                 .then(m => m.produtosRoutes)
     },
-    {
-        path: 'notas-fiscais',
-        loadChildren: () =>
-            import('./features/notas-fiscais/notas-fiscais.routes')
-                .then(m => m.notasFiscaisRoutes)
-    },
+    // {
+    //     path: 'notas-fiscais',
+    //     loadChildren: () =>
+    //         import('./features/notas-fiscais/notas-fiscais.routes')
+    //             .then(m => m.notasFiscaisRoutes)
+    // },
     {
         path: '**',
         redirectTo: '/produtos'
