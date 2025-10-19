@@ -35,7 +35,10 @@ public static class EndpointExtensions
         group.MapEndpoint<GetProdutoBySkuEndpoint>();
         group.MapEndpoint<UpdateProdutoEndpoint>();
         group.MapEndpoint<DeleteProdutoEndpoint>();
+        
         group.MapEndpoint<ProcessarBaixaLoteEndpoint>();
+        group.MapEndpoint<ProcessarMovimentacaoEndpoint>();
+
     }
 
     // private static void ConfigureBusinessEndpoints(RouteGroupBuilder group)

@@ -30,6 +30,9 @@ public static class EndpointExtensions
 
         group.MapEndpoint<CreateNotaFiscalEndpoint>();
         group.MapEndpoint<PrintNotaFiscalEndpoint>();
+        group.MapEndpoint<GetAllNotasFiscaisEndpoint>();
+        group.MapEndpoint<GetNotaFiscalByIdEndpoint>();
+        group.MapEndpoint<DeleteNotaFiscalEndpoint>();
     }
 
     // private static void ConfigureBusinessEndpoints(RouteGroupBuilder group)

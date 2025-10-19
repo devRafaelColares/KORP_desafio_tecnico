@@ -11,7 +11,7 @@ public class CreateNotaFiscalEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     {
-        app.MapPost("/notas", HandleAsync)
+        app.MapPost("/notas-fiscais", HandleAsync)
             .WithName("CreateNotaFiscal")
             .WithTags("NotasFiscais")
             .WithSummary("Cadastra uma nota fiscal com itens")
@@ -29,7 +29,7 @@ public class CreateNotaFiscalEndpoint : IEndpoint
             var response = await service.CreateAsync(request);
             return response.Code switch
             {
-                201 => Results.Created($"/notas/{response.Data?.Id}", response),
+                201 => Results.Created($"/notas-fiscais/{response.Data?.Id}", response),
                 400 => Results.BadRequest(response),
                 _ => Results.Problem(detail: response.Message, statusCode: response.Code)
             };

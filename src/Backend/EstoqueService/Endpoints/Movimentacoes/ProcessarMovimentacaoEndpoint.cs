@@ -4,30 +4,29 @@ using EstoqueService.Core.Responses.Estoque;
 using EstoqueService.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 using EstoqueService.Contracts;
-using EstoqueService.Core.Requests.Movimentacoes;
 
 namespace EstoqueService.Endpoints.Movimentacoes;
 
-public class ProcessarBaixaLoteEndpoint : IEndpoint
+public class ProcessarMovimentacaoEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     {
-        app.MapPost("/movimentacoes-estoque/lote", HandleAsync)
-            .WithName("ProcessarBaixaLote")
+        app.MapPost("/movimentacoes-estoque", HandleAsync)
+            .WithName("ProcessarMovimentacaoEstoque")
             .WithTags("MovimentacoesEstoque")
-            .WithSummary("Processa movimentação de estoque em lote")
-            .Produces<Response<List<BaixaProdutoResultado>>>(StatusCodes.Status200OK)
-            .Produces<Response<List<BaixaProdutoResultado>>>(StatusCodes.Status400BadRequest)
+            .WithSummary("Processa movimentação individual de estoque")
+            .Produces<Response<BaixaProdutoResultado>>(StatusCodes.Status200OK)
+            .Produces<Response<BaixaProdutoResultado>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
     }
 
     private static async Task<IResult> HandleAsync(
         [FromServices] IMovimentacaoEstoqueService service,
-        [FromBody] MovimentacaoBatchRequest request)
+        [FromBody] MovimentacaoEstoqueRequest request)
     {
         try
         {
-            var response = await service.ProcessarBaixaLoteAsync(request);
+            var response = await service.ProcessarMovimentacaoAsync(request);
 
             return response.Code switch
             {
@@ -41,7 +40,7 @@ public class ProcessarBaixaLoteEndpoint : IEndpoint
             return Results.Problem(
                 detail: ex.Message,
                 statusCode: StatusCodes.Status500InternalServerError,
-                title: "Erro interno ao processar movimentação em lote"
+                title: "Erro interno ao processar movimentação de estoque"
             );
         }
     }
