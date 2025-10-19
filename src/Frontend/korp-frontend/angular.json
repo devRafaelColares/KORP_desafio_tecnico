@@ -80,7 +80,7 @@
               }
             ],
             "styles": [
-              "src/styles.css",
+              "src/styles/styles.scss",
               "src/custom-theme.scss"
             ]
           }
